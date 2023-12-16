@@ -1,0 +1,201 @@
+{
+    "compartments": [
+        {
+            "name": "S",
+            "value": 35200000
+        },
+        {
+            "name": "E1",
+            "value": 0
+        },
+        {
+            "name": "E2",
+            "value": 0
+        },
+        {
+            "name": "I1",
+            "value": 3520000
+        },
+        {
+            "name": "I2",
+            "value": 5280000
+        },
+        {
+            "name": "Casual",
+            "value": 0
+        },
+        {
+            "name": "Fatal",
+            "value": 0
+        },
+        {
+            "name": "Hosp",
+            "value": 0
+        },
+        {
+            "name": "R1",
+            "value": 0
+        },
+        {
+            "name": "R2",
+            "value": 0
+        },
+        {
+            "name": "Death",
+            "value": 0
+        },
+        {
+            "name": "Immunity",
+            "value": 0
+        }
+    ],
+    "interventions": [
+        {
+            "name": "u1"
+        },
+        {
+            "name": "u2"
+        }
+    ],
+    "constants": [
+        {
+            "name": "c",
+            "value": 1000
+        },
+        {
+            "name": "d1",
+            "value": 300
+        },
+        {
+            "name": "d2",
+            "value": 1500
+        },
+        {
+            "name": "alpha",
+            "value": 0.7
+        },
+        {
+            "name": "beta",
+            "value": 0.3
+        },
+        {
+            "name": "Tvaccine_lag",
+            "value": 28
+        },
+        {
+            "name": "R0",
+            "value": 2.25
+        },
+        {
+            "name": "N",
+            "value": 44e6
+        },
+        {
+            "name": "Tinf",
+            "value": 10
+        },
+        {
+            "name": "Tinc",
+            "value": 10
+        },
+        {
+            "name": "Tquar",
+            "value": 10
+        },
+        {
+            "name": "Trecovery_casual",
+            "value": 11
+        },
+        {
+            "name": "Thospital_lag",
+            "value": 30
+        },
+        {
+            "name": "Tdeath",
+            "value": 5
+        },
+        {
+            "name": "pAsym",
+            "value": 0.4
+        },
+        {
+            "name": "pCasual",
+            "value": 0.8
+        },
+        {
+            "name": "pFatal",
+            "value": 0.2
+        },
+        {
+            "name": "Trenewal",
+            "value": 5
+        }
+    ],
+    "flows": [
+        {
+            "equation": "pAsym * (1 - u1 + (1 - alpha)*u1)^2 * (R0 * S*(I1 + I2))/(Tinf * N)",
+            "source": "S",
+            "target": "E1"
+        },
+        {
+            "equation": "(1 - pAsym) * (1 - u1 + (1 - alpha)*u1)^2 * (R0 * S*(I1 + I2))/(Tinf * N)",
+            "source": "S",
+            "target": "E2"
+        },
+        {
+            "equation": "u2 * S * beta / Tvaccine_lag",
+            "source": "S",
+            "target": "Immunity"
+        },
+        {
+            "equation": "E1 / Tinc",
+            "source": "E1",
+            "target": "I1"
+        },
+        {
+            "equation": "E2 / Tinc",
+            "source": "E2",
+            "target": "I2"
+        },
+        {
+            "equation": "I1 / Tinf",
+            "source": "I1",
+            "target": "R1"
+        },
+        {
+            "equation": "R1 / Trenewal",
+            "source": "R1",
+            "target": "S"
+        },
+        {
+            "equation": "(pCasual)/(1 - pAsym) * I2 / Tquar",
+            "source": "I2",
+            "target": "Casual"
+        },
+        {
+            "equation": "(pFatal)/(1 - pAsym) * I2 / Tquar",
+            "source": "I2",
+            "target": "Fatal"
+        },
+        {
+            "equation": "Casual / Trecovery_casual",
+            "source": "Casual",
+            "target": "R2"
+        },
+        {
+            "equation": "R2 / Trenewal",
+            "source": "R2",
+            "target": "S"
+        },
+        {
+            "equation": "Fatal / Thospital_lag",
+            "source": "Fatal",
+            "target": "Hosp"
+        },
+        {
+            "equation": "Hosp / Tdeath",
+            "source": "Hosp",
+            "target": "Death"
+        }
+    ]
+}
