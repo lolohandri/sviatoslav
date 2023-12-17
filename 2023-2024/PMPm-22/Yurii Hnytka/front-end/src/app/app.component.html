@@ -1,0 +1,124 @@
+<div class="buttons-container top-left-buttons">
+    <div class="workspace-controls">
+        <div class="workspace-select-wrapper">
+            <mat-select
+                class="workspace-select"
+                [formControl]="workspaceControl"
+                (valueChange)="onWorkspaceChange($event)"
+            >
+                <mat-option
+                    *ngFor="let workspace of workspaces"
+                    [value]="workspace"
+                >
+                    {{ workspace }}
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <button
+            mat-mini-fab
+            class="button"
+            color="primary"
+            (click)="addNewWorkspace()"
+        >
+            <mat-icon>add_box</mat-icon>
+        </button>
+
+        <button
+            mat-mini-fab
+            class="button"
+            color="primary"
+            [disabled]="workspaces.length === 1"
+            (click)="removeCurrentWorkspace()"
+        >
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        (click)="openDefinitionsTableDialog()"
+    >
+        <mat-icon>tune</mat-icon>
+    </button>
+</div>
+
+<div class="buttons-container top-right-buttons">
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        (click)="openAddCompartmentDialog()"
+    >
+        <mat-icon>add</mat-icon>
+    </button>
+
+    <button mat-mini-fab class="button" color="primary" (click)="layout()">
+        <mat-icon>account_tree</mat-icon>
+    </button>
+
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        [disabled]="!elementSelected"
+        (click)="onDeleteElementDialog()"
+    >
+        <mat-icon>delete</mat-icon>
+    </button>
+
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        [disabled]="!compartmentsCount"
+        (click)="onClearCompartmentsDialog()"
+    >
+        <mat-icon>delete_forever</mat-icon>
+    </button>
+
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        (click)="onModelImport()"
+    >
+        <mat-icon>upload</mat-icon>
+    </button>
+
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        (click)="onModelExport()"
+    >
+        <mat-icon>download</mat-icon>
+    </button>
+</div>
+
+<div class="buttons-container bottom-left-buttons">
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        [disabled]="!simulationResults"
+        (click)="onSimulationResultsDialog()"
+    >
+        <mat-icon>query_stats</mat-icon>
+    </button>
+</div>
+
+<div class="buttons-container bottom-right-buttons">
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        (click)="onModelSimulateDialog()"
+    >
+        <mat-icon>memory</mat-icon>
+    </button>
+</div>
+
+<div #canvas class="canvas"></div>
