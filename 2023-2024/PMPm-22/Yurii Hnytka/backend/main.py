@@ -1,55 +1,73 @@
-from flask import Flask, request, jsonify
+"""Main Module"""
 
-from simulate import simulate
-from optimalControl import optimalControl
-from validateExpression import validateExpression
 
-# Creating the application instance
-app = Flask(__name__)
+from flask import Flask, Response, request, jsonify
+
+from core.classes.common.validation_request_body import ValidationRequestBody
+from core.classes.common.validation_response import ValidationResponse
+from core.classes.optimal_control.request_body import OptimalControlRequestBody
+from core.classes.optimal_control.response import OptimalControlResponse
+from core.classes.parameters_identification.request_body import PIRequestBody
+from core.classes.parameters_identification.response import PIResponse
+from core.classes.simulation.response import SimulationResponse
+from core.classes.simulation.request_body import SimulationRequestBody
+from middleware.simulate import simulate
+from middleware.optimal_control import optimal_control
+from middleware.parameters_identification import parameters_identification
+from middleware.validate_expression import validate_expression
+
+app: Flask = Flask(__name__)
 
 
 @app.route('/simulate', methods=['POST'])
-def simulateEndpoint():
+def simulate_endpoint() -> Response:
     """Simulation endpoint"""
 
-    # Getting the data from the request
-    data = request.get_json()
+    body: SimulationRequestBody = SimulationRequestBody(request.get_json())
 
-    # Simulating the system
-    result = simulate(data)
+    result: SimulationResponse = simulate(body.parameters, body.model)
 
-    # Returning the result
-    return jsonify(result)
+    return jsonify(result.definition)
 
 
 @app.route('/optimal-control', methods=['POST'])
-def optimalControlEndpoint():
-    """Optimal control endpoint"""
+def optimal_control_endpoint() -> Response:
+    """Optimal Control endpoint"""
 
-    # Getting the data from the request
-    data = request.get_json()
+    body: OptimalControlRequestBody = OptimalControlRequestBody(
+        request.get_json()
+    )
 
-    # Solving the optimal control problem
-    result = optimalControl(data)
+    result: OptimalControlResponse = optimal_control(
+        body.parameters, body.model
+    )
 
-    # Returning the result
-    return jsonify(result)
+    return jsonify(result.definition)
+
+
+@app.route('/parameters-identification', methods=['POST'])
+def parameters_identification_endpoint():
+    """Parameters identification endpoint"""
+
+    body: PIRequestBody = PIRequestBody(request.get_json())
+
+    result: PIResponse = parameters_identification(body.parameters, body.model)
+
+    return jsonify(result.definition)
 
 
 @app.route('/validate-expression', methods=['POST'])
-def validateExpressionEndpoint():
+def validate_expression_endpoint() -> Response:
     """Expression validation endpoint"""
 
-    # Getting the data from the request
-    data = request.get_json()
+    body: ValidationRequestBody = ValidationRequestBody(request.get_json())
 
-    # Validating the expression
-    result = validateExpression(data)
+    result: ValidationResponse = validate_expression(
+        body.expression, body.allowed_symbols
+    )
 
-    # Returning the result
-    return jsonify(result)
+    return jsonify(result.definition)
 
 
-# Running the application
 if __name__ == '__main__':
     app.run(debug=True)

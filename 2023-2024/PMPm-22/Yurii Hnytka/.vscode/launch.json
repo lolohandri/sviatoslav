@@ -14,9 +14,10 @@
                 "FLASK_APP": "main.py",
                 "FLASK_DEBUG": "1"
             },
-            "args": ["run", "--no-debugger", "--no-reload"],
+            "args": ["run", "--no-debugger", "--no-reload", "--host", "0.0.0.0"],
             "jinja": true,
-            "justMyCode": true
+            "justMyCode": true,
+            "python": "/usr/bin/python3.12"
         },
         {
             "name": "FrontEnd",
@@ -28,13 +29,6 @@
             "runtimeExecutable": "/usr/bin/vivaldi",
             "runtimeArgs": ["--force-dark-mode", "--disable-web-security"],
             "userDataDir": "${workspaceFolder}/front-end/.browser-data"
-        },
-        {
-            "name": "ng test",
-            "type": "chrome",
-            "request": "launch",
-            "preLaunchTask": "npm: test",
-            "url": "http://localhost:9876/debug.html"
         }
     ],
     "compounds": [
