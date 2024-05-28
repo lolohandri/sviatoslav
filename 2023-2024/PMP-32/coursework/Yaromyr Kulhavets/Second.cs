@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-class Program
+class Second
 {
     static object lockObject = new object();
 
