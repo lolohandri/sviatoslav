@@ -5,7 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-class Program
+class First
 {
     static void Main(string[] args)
     {
